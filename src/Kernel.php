@@ -11,28 +11,30 @@ final class Kernel
     private string $request;
     private array $requestParts;
     private string $imageFilename;
-    private array $extensions;
+    private array $supportedExtensionNames;
+    private array $extensions = [];
 
-    public function __construct(string $request, array $extensions)
+    public function __construct(string $request, array $supportedExtensionNames)
     {
         $this->request = ltrim($request, "/");
         $this->requestParts = explode("/", $this->request);
         $this->imageFilename = $this->requestParts[0];
-        $this->extensions = $extensions;
+        $this->supportedExtensionNames = $supportedExtensionNames;
     }
 
     public function run()
     {
-        foreach ($this->extensions as $extension) {
+        foreach ($this->supportedExtensionNames as $extension) {
             $className = "\App\Extension\\$extension";
             $this->registerExtension(new $className);
         }
-
+        
         $validator = new RequestValidator($this->request);
         $requestValidatorResult = $validator->validate();
 
         $extensionValidator = new ExtensionValidator($this->request, $this->extensions);
         $extensionValidatorResult = $extensionValidator->validate();
+
 
         if($requestValidatorResult && $extensionValidatorResult) {
 

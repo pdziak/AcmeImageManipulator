@@ -28,7 +28,7 @@ final class Kernel
             $className = "\App\Extension\\$extension";
             $this->registerExtension(new $className);
         }
-        
+
         $validator = new RequestValidator($this->request);
         $requestValidatorResult = $validator->validate();
 
@@ -36,6 +36,7 @@ final class Kernel
         $extensionValidatorResult = $extensionValidator->validate();
 
 
+        dump($extensionValidatorResult);die;
         if($requestValidatorResult && $extensionValidatorResult) {
 
         }

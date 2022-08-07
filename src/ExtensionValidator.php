@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App;
 
+use App\Contract\ExtensionContract;
 use App\Contract\ValidatorContract;
 
 final class ExtensionValidator implements ValidatorContract
@@ -19,11 +20,21 @@ final class ExtensionValidator implements ValidatorContract
     public function validate(): bool
     {
         $regexp = $this->composeRegexpFromExtensions();
+
+        return !!preg_match($regexp, $this->request);
     }
 
-    private function composeRegexpFromExtensions()
+    private function composeRegexpFromExtensions(): string
     {
-        dd($this->extensions);
+        $patterns = [];
+        /**
+         * @var $extension ExtensionContract
+         */
+        foreach ($this->extensions as $extension) {
+            $patterns[] = $extension->getUrlValidationRegexp();
+        }
+
+        return '('.implode('|', $patterns).')';
     }
 
 

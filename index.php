@@ -17,6 +17,6 @@ $extensions = [
     'CropExtension'
 ];
 
-$app = new App\Kernel($_GET['s'], $extensions);
+$app = new App\Kernel($_GET['s'], $imageLibrary, $extensions);
 $app->run();
 

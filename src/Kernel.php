@@ -5,6 +5,7 @@ namespace App;
 
 
 use App\Contract\ExtensionContract;
+use App\Extension\ValidationException;
 
 final class Kernel
 {
@@ -22,6 +23,9 @@ final class Kernel
         $this->supportedExtensionNames = $supportedExtensionNames;
     }
 
+    /**
+     * @throws ValidationException
+     */
     public function run()
     {
         foreach ($this->supportedExtensionNames as $extension) {
@@ -35,11 +39,11 @@ final class Kernel
         $extensionValidator = new ExtensionValidator($this->request, $this->extensions);
         $extensionValidatorResult = $extensionValidator->validate();
 
-
-        dump($extensionValidatorResult);die;
         if($requestValidatorResult && $extensionValidatorResult) {
 
         }
+
+        throw new ValidationException();
 
     }
 

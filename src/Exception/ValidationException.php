@@ -13,6 +13,6 @@ final class ValidationException extends \Exception {
 
     public function __toString()
     {
-        return 'This is an error';
+        return $this->message;
     }
 }

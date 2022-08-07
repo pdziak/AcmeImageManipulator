@@ -22,6 +22,7 @@ final class Kernel
         $this->requestParts = explode("/", $this->request);
         $this->imageFilename = $this->requestParts[0];
         $this->supportedExtensionNames = $supportedExtensionNames;
+        $this->imageLibrary = $imageLibrary;
     }
 
     /**
@@ -35,15 +36,17 @@ final class Kernel
         }
 
         $validator = new RequestValidator($this->request);
-        $requestValidatorResult = $validator->validate();
-
-        $extensionValidator = new ExtensionValidator($this->request, $this->extensions);
-        $extensionValidatorResult = $extensionValidator->validate();
-
-        if(!($requestValidatorResult && $extensionValidatorResult)) {
-            throw new ValidationException();
+        if (!$requestValidatorResult = $validator->validate()) {
+            throw new ValidationException($requestValidatorResult);
         }
 
+        $extensionValidator = new ExtensionValidator($this->request, $this->extensions);
+        if (!$extensionValidatorResult = $extensionValidator->validate()) {
+            throw new ValidationException($extensionValidatorResult);
+        }
+
+        dd($this->requestParts);
+        die;
     }
 
     private function registerExtension(ExtensionContract $extension)

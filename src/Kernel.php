@@ -7,7 +7,7 @@ final class Kernel {
     private string $request;
     private array $requestParts;
     private string $imageFilename;
-
+    
     public function __construct(string $request) {
         $this->request = ltrim($request, "/");
         $this->requestParts = explode("/", $this->request);

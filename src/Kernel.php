@@ -23,18 +23,21 @@ final class Kernel
 
     public function run()
     {
-
-//        dump($this->extensions);
         foreach ($this->extensions as $extension) {
-            $className = "\App\Extension\CropExtension";
-
+            $className = "\App\Extension\\$extension";
             $this->registerExtension(new $className);
         }
 
         $validator = new RequestValidator($this->request);
-        $result = $validator->validate();
-        dump($result);
-        die;
+        $requestValidatorResult = $validator->validate();
+
+        $extensionValidator = new ExtensionValidator($this->request, $this->extensions);
+        $extensionValidatorResult = $extensionValidator->validate();
+
+        if($requestValidatorResult && $extensionValidatorResult) {
+
+        }
+
     }
 
     private function registerExtension(ExtensionContract $extension)

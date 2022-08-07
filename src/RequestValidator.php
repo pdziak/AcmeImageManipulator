@@ -3,10 +3,11 @@ declare(strict_types=1);
 
 namespace App;
 
-final class RequestValidator
-{
+use App\Contract\ValidatorContract;
 
-    const VALID_REQUEST_URL_REGEXP = '/[a-zA-Z0-9\s]+\.[a-zA-Z]{3,4} ([a-z\-(a-z0-9,)]/';
+final class RequestValidator implements ValidatorContract
+{
+    const FILENAME_REGEXP = '/[a-zA-Z0-9\s]+\.[a-zA-Z]{3,4}/';
 
     private string $request;
 
@@ -17,13 +18,12 @@ final class RequestValidator
 
     public function validate(): bool
     {
-        dump($this->request);
         return $this->validateRequestURL();
     }
 
-    private function validateRequestURL()
+    private function validateRequestURL(): bool
     {
-        return !!preg_match(self::VALID_REQUEST_URL_REGEXP, $this->request);
+        return !!preg_match(self::FILENAME_REGEXP, $this->request);
     }
 
 

@@ -16,6 +16,7 @@ final class Kernel {
 
     public function run() {
         $validator = new RequestValidator($this->request);
-        $validator->validate();
+        $result = $validator->validate();
+        dump($result);die;
     }
 }

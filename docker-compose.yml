@@ -5,4 +5,4 @@ services:
     ports:
       - "38080:80"
     volumes:
-      - ./src:/data/wwwroot
+      - ./:/data/wwwroot

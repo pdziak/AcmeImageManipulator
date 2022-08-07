@@ -7,6 +7,10 @@ class Kernel {
     private $request;
 
     public function __construct(string $request) {
+        $this->request = $request;
+    }
+
+    public function handle() {
 
     }
 }

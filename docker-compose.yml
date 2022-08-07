@@ -1,0 +1,6 @@
+version: '3'
+services:
+  nginx-php7:
+    image: skiychan/nginx-php7:latest
+    ports:
+      - "38080:80"

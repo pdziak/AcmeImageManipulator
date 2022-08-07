@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace App;
 
-
 use App\Contract\ExtensionContract;
 use App\Exception\ValidationException;
 
@@ -45,8 +44,12 @@ final class Kernel
             throw new ValidationException($extensionValidatorResult);
         }
 
-        dd($this->requestParts);
-        die;
+        /**
+         * @var $extension ExtensionContract
+         */
+        foreach ($this->extensions as $extension) {
+            $extension->process($this->request);
+        }
     }
 
     private function registerExtension(ExtensionContract $extension)

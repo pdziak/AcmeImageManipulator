@@ -8,7 +8,7 @@ use Imagine\Gd\Imagine;
 class ImagineHandler {
     private $lib;
 
-    public function (Imagine $imagine) {
+    public function setLibrary(Imagine $imagine) {
         $this->lib = $imagine;
     }
 

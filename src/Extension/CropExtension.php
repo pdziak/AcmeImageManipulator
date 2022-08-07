@@ -14,15 +14,22 @@ final class CropExtension implements ExtensionContract
         return self::REGEXP_WITHOUT_DELIMITERS;
     }
 
-    public function process(string $request): void
+    public function process(string $request): array
     {
         $values = $this->parseParams($request);
         list($start, $end, $width, $height) = explode(",", $values);
-        dump($end);die;
+
+        return [
+            'start' => $start,
+            'end' => $end,
+            'width' => $width,
+            'height' => $height
+        ];
     }
 
-    private function parseParams(string $request): string {
-        preg_match('/'.self::REGEXP_WITHOUT_DELIMITERS.'/', $request, $matches);
+    private function parseParams(string $request): string
+    {
+        preg_match('/' . self::REGEXP_WITHOUT_DELIMITERS . '/', $request, $matches);
 
         return $matches['params'];
     }

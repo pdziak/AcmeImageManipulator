@@ -5,5 +5,5 @@ namespace App\Contract;
 
 interface ExtensionContract {
     public function getUrlValidationRegexp(): string;
-    public function process(string $request): void;
+    public function process(string $request): array;
 }

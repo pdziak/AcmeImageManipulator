@@ -48,7 +48,8 @@ final class Kernel
          * @var $extension ExtensionContract
          */
         foreach ($this->extensions as $extension) {
-            $extension->process($this->request);
+            $params = $extension->process($this->request);
+            dump($params);die;
         }
     }
 

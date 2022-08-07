@@ -4,3 +4,5 @@ services:
     image: skiychan/nginx-php7:latest
     ports:
       - "38080:80"
+    volumes:
+      - ./app:/data/wwwroot

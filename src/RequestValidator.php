@@ -3,7 +3,7 @@ declare(strict_types=1);
 
 namespace App;
 
-class RequestValidator
+final class RequestValidator
 {
 
     const VALID_REQUEST_URL_REGEXP = '/[a-zA-Z0-9\s]+\.[a-zA-Z]{3,4} ([a-z\-(a-z0-9,)]/';

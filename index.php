@@ -10,6 +10,13 @@ if(!isset($_GET['s'])) {
     exit(0);
 }
 
-$app = new App\Kernel($_GET['s']);
+/**
+ * uppercase class name, eg. CropExtension, GrayscaleException
+ */
+$extensions = [
+    'CropExtension'
+];
+
+$app = new App\Kernel($_GET['s'], $extensions);
 $app->run();
 

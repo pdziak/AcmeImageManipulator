@@ -3,20 +3,42 @@ declare(strict_types=1);
 
 namespace App;
 
-final class Kernel {
+
+use App\Contract\ExtensionContract;
+
+final class Kernel
+{
     private string $request;
     private array $requestParts;
     private string $imageFilename;
-    
-    public function __construct(string $request) {
+    private array $extensions;
+
+    public function __construct(string $request, array $extensions)
+    {
         $this->request = ltrim($request, "/");
         $this->requestParts = explode("/", $this->request);
         $this->imageFilename = $this->requestParts[0];
+        $this->extensions = $extensions;
     }
 
-    public function run() {
+    public function run()
+    {
+
+//        dump($this->extensions);
+        foreach ($this->extensions as $extension) {
+            $className = "\App\Extension\CropExtension";
+
+            $this->registerExtension(new $className);
+        }
+
         $validator = new RequestValidator($this->request);
         $result = $validator->validate();
-        dump($result);die;
+        dump($result);
+        die;
+    }
+
+    private function registerExtension(ExtensionContract $extension)
+    {
+        $this->extensions[] = $extension;
     }
 }

@@ -5,7 +5,7 @@ namespace App;
 
 
 use App\Contract\ExtensionContract;
-use App\Extension\ValidationException;
+use App\Exception\ValidationException;
 
 final class Kernel
 {
@@ -14,8 +14,9 @@ final class Kernel
     private string $imageFilename;
     private array $supportedExtensionNames;
     private array $extensions = [];
+    private object $imageLibrary;
 
-    public function __construct(string $request, array $supportedExtensionNames)
+    public function __construct(string $request, object $imageLibrary, array $supportedExtensionNames)
     {
         $this->request = ltrim($request, "/");
         $this->requestParts = explode("/", $this->request);
@@ -39,11 +40,9 @@ final class Kernel
         $extensionValidator = new ExtensionValidator($this->request, $this->extensions);
         $extensionValidatorResult = $extensionValidator->validate();
 
-        if($requestValidatorResult && $extensionValidatorResult) {
-
+        if(!($requestValidatorResult && $extensionValidatorResult)) {
+            throw new ValidationException();
         }
-
-        throw new ValidationException();
 
     }
 

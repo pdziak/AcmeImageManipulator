@@ -11,4 +11,5 @@ if(!isset($_GET['s'])) {
 }
 
 $app = new App\Kernel($_GET['s']);
+$app->run();
 

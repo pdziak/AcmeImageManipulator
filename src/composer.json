@@ -1,0 +1,17 @@
+{
+    "name": "acme/image-manipulator",
+    "type": "project",
+    "autoload": {
+        "psr-4": {
+            "App\\": "./"
+        }
+    },
+    "authors": [
+        {
+            "name": "przemekdziak",
+            "email": "dziakprzemek@gmail.com"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {}
+}

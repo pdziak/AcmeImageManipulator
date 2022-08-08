@@ -9,9 +9,10 @@ Test task
 ## Instalation
 
 - Clone the repo https://github.com/pdziak/AcmeImageManipulator.git
-- In terminal in the project root path run: **docker-compose up --build**
-- Go to **www** directory.
+- Go to **www** directory in project root.
 - In terminal in the above path run: **composer install**
+- Go to the project root path and in terminal run: **docker-compose up --build**
+
 
 ## Usage
 

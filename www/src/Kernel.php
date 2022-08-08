@@ -29,7 +29,6 @@ final class Kernel
             $this->route = self::ACTION_SHOW;
         }
 
-        mime_content_type();
         $this->requestParts = explode("/", $this->request);
         $this->filename = $this->requestParts[0];
         $this->supportedExtensionNames = $supportedExtensionNames;

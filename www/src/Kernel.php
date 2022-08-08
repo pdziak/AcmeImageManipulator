@@ -30,7 +30,7 @@ final class Kernel
             $this->route = self::ACTION_SHOW;
         }
 
-        $this->requestParts = explode("/", $this->request);
+        $this->requestParts = explode("/", ltrim($this->request, '/'));
         $this->filename = $this->requestParts[0];
         $this->supportedExtensionNames = $supportedExtensionNames;
         $this->imageLibrary = $imageLibrary;
@@ -85,7 +85,8 @@ final class Kernel
          * @var $extension ExtensionContract
          */
         foreach ($this->extensions as $extension) {
-            $img = $extension->process($file);
+            $params = $extension->getParams($this->request);
+            $img = $extension->process($params);
             $file = $img;
         }
 

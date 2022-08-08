@@ -4,7 +4,6 @@ declare(strict_types=1);
 namespace App\Extension;
 
 use App\Contract\ExtensionContract;
-use Imagine\Gd\Image;
 
 final class CropExtension extends Extension implements ExtensionContract
 {
@@ -21,10 +20,10 @@ final class CropExtension extends Extension implements ExtensionContract
         list($start, $end, $width, $height) = explode(",", $values);
 
         return [
-            'start' => $start,
-            'end' => $end,
-            'width' => $width,
-            'height' => $height
+            'start' => (int)$start,
+            'end' => (int)$end,
+            'width' => (int)$width,
+            'height' => (int)$height
         ];
     }
 
@@ -35,7 +34,7 @@ final class CropExtension extends Extension implements ExtensionContract
         return $matches['params'];
     }
 
-    public function process(array $params): Image
+    public function process(array $params): object
     {
         return $this->imageLibrary->crop($params['start'], $params['end'], $params['width'], $params['height']);
     }

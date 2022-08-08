@@ -20,9 +20,9 @@ class ImagineHandler implements ImageLibrary
         $this->lib = new Imagine();
     }
 
-    public function crop(int $start, int $end, int $width, int $height)
+    public function crop(int $start, int $end, int $width, int $height): Image
     {
-        $this->file->crop(new Point($start, $end), new Box($width, $height));
+        return $this->file->crop(new Point($start, $end), new Box($width, $height));
     }
 
     public function open(string $file)

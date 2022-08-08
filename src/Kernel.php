@@ -5,12 +5,14 @@ namespace App;
 
 use App\Contract\ExtensionContract;
 use App\Exception\ValidationException;
-use Imagine\Gd\Image;
 use Imagine\Gd\Imagine;
 
 final class Kernel
 {
     const UPLOADS_PATH = 'uploads';
+    const TEMP_PATH = 'tmp';
+    const ACTION_SHOW = 'show';
+    const ACTION_PROCESS = 'process';
 
     private string $request;
     private array $requestParts;
@@ -18,10 +20,16 @@ final class Kernel
     private array $supportedExtensionNames;
     private array $extensions = [];
     private object $imageLibrary;
+    private string $route = self::ACTION_PROCESS;
 
     public function __construct(string $request, Imagine $imageLibrary, array $supportedExtensionNames)
     {
-        $this->request = ltrim($request, "/");
+        $this->request = preg_replace('@^/s/(.+)@', '$1', $request, -1, $count);
+        if ($count) {
+            $this->route = self::ACTION_SHOW;
+        }
+
+        mime_content_type();
         $this->requestParts = explode("/", $this->request);
         $this->filename = $this->requestParts[0];
         $this->supportedExtensionNames = $supportedExtensionNames;
@@ -32,6 +40,28 @@ final class Kernel
      * @throws ValidationException
      */
     public function run()
+    {
+        if ($this->route === self::ACTION_SHOW) {
+            return $this->show();
+        }
+
+        $this->process();
+    }
+
+    private function show()
+    {
+        header("Content-type: image");
+        $file = file_get_contents($this->getRootDir() . '/' . self::TEMP_PATH . '/' . $this->filename);
+        echo $file;
+        exit(0);
+    }
+
+    private function getRootDir(): string
+    {
+        return dirname(__FILE__) . '/..';
+    }
+
+    private function process()
     {
         foreach ($this->supportedExtensionNames as $extension) {
             $className = "\App\Extension\\$extension";
@@ -58,15 +88,12 @@ final class Kernel
             $img = $extension->process($file, $extension->getParams($this->request));
             $file = $img;
         }
+
+        $file->save($rootDir . '/' . self::TEMP_PATH . '/' . $this->filename);
     }
 
     private function registerExtension(ExtensionContract $extension)
     {
         $this->extensions[] = $extension;
-    }
-
-    private function getRootDir(): string
-    {
-        return dirname(__FILE__) . '/..';
     }
 }

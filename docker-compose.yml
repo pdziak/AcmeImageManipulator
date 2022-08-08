@@ -5,6 +5,6 @@ services:
     ports:
       - "38080:80"
     volumes:
-      - ./:/data/wwwroot
+      - ./www:/data/wwwroot
       - ./vhost:/usr/local/nginx/conf/vhost
       - ./wwwlogs:/data/wwwlogs

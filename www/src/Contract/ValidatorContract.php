@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace App\Contract;
 
-interface ValidatorContract {
+interface ValidatorContract
+{
     public function validate(): bool;
 }

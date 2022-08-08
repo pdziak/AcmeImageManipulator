@@ -2,7 +2,6 @@
 declare(strict_types=1);
 
 
-
 namespace App\Extension;
 
 
@@ -12,7 +11,8 @@ abstract class Extension
 {
     protected ImageLibrary $imageLibrary;
 
-    public function __construct(ImageLibrary $imageLibrary) {
+    public function __construct(ImageLibrary $imageLibrary)
+    {
         $this->imageLibrary = $imageLibrary;
     }
 }

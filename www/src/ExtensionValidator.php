@@ -20,7 +20,7 @@ final class ExtensionValidator implements ValidatorContract
     public function validate(): bool
     {
         $regexp = $this->composeRegexpFromExtensions();
-        
+
         return !!preg_match($regexp, $this->request);
     }
 
@@ -34,7 +34,7 @@ final class ExtensionValidator implements ValidatorContract
             $patterns[] = $extension->getUrlValidationRegexp();
         }
 
-        return '('.implode('|', $patterns).')';
+        return '(' . implode('|', $patterns) . ')';
     }
 
 

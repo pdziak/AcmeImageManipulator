@@ -85,8 +85,7 @@ final class Kernel
          * @var $extension ExtensionContract
          */
         foreach ($this->extensions as $extension) {
-            $params = $extension->getParams($this->request);
-            $img = $extension->process($file, );
+            $img = $extension->process($file);
             $file = $img;
         }
 

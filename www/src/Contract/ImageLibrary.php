@@ -5,6 +5,7 @@ namespace App\Contract;
 
 interface ImageLibrary
 {
-    public function open();
+    public function open(string $file);
+
     public function crop(int $start, int $end, int $width, int $height);
 }

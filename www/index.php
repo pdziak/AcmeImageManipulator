@@ -1,6 +1,8 @@
 <?php
 declare(strict_types=1);
 
+use App\ImagineHandler;
+
 ini_set("display_errors", (string)1);
 error_reporting(E_ALL);
 
@@ -18,6 +20,6 @@ $extensions = [
     'CropExtension'
 ];
 
-$app = new App\Kernel($_GET['s'], new \App\ImagineHandler(), $extensions);
+$app = new App\Kernel($_GET['s'], new ImagineHandler(), $extensions);
 $app->run();
 

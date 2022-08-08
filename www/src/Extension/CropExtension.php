@@ -4,9 +4,9 @@ declare(strict_types=1);
 namespace App\Extension;
 
 use App\Contract\ExtensionContract;
-use Exception;
+use Imagine\Gd\Image;
 
-final class CropExtension extends Exception implements ExtensionContract
+final class CropExtension extends Extension implements ExtensionContract
 {
     const REGEXP_WITHOUT_DELIMITERS = '.*crop-(?<params>([0-9]+,)[0-9]+,[0-9]+,[0-9]+)';
 
@@ -35,8 +35,8 @@ final class CropExtension extends Exception implements ExtensionContract
         return $matches['params'];
     }
 
-    public function getActionName(): string
+    public function process(array $params): Image
     {
-        return 'crop';
+        return $this->imageLibrary->crop($params['start'], $params['end'], $params['width'], $params['height']);
     }
 }

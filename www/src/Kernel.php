@@ -6,7 +6,6 @@ namespace App;
 use App\Contract\ExtensionContract;
 use App\Contract\ImageLibrary;
 use App\Exception\ValidationException;
-use Imagine\Gd\Imagine;
 
 final class Kernel
 {
@@ -91,6 +90,9 @@ final class Kernel
         }
 
         $file->save($rootDir . '/' . self::TEMP_PATH . '/' . $this->filename);
+
+        header('Location: /s/' . $this->filename . '');
+        die();
     }
 
     private function registerExtension(ExtensionContract $extension)

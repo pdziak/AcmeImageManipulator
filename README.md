@@ -31,5 +31,5 @@ then use the image name as a parameter, eg. http://localhost:38080/your-image-na
 
 ## Futher releases
 
-Add support for multiple modifiers, eg:
+Test support for multiple modifiers, eg:
 http://localhost:38080/chinese-house.jpg/crop-800,1000,800,600|resize-800,600

@@ -5,21 +5,25 @@ namespace App;
 
 use App\Contract\ExtensionContract;
 use App\Exception\ValidationException;
+use Imagine\Gd\Image;
+use Imagine\Gd\Imagine;
 
 final class Kernel
 {
+    const UPLOADS_PATH = 'uploads';
+
     private string $request;
     private array $requestParts;
-    private string $imageFilename;
+    private string $filename;
     private array $supportedExtensionNames;
     private array $extensions = [];
     private object $imageLibrary;
 
-    public function __construct(string $request, object $imageLibrary, array $supportedExtensionNames)
+    public function __construct(string $request, Imagine $imageLibrary, array $supportedExtensionNames)
     {
         $this->request = ltrim($request, "/");
         $this->requestParts = explode("/", $this->request);
-        $this->imageFilename = $this->requestParts[0];
+        $this->filename = $this->requestParts[0];
         $this->supportedExtensionNames = $supportedExtensionNames;
         $this->imageLibrary = $imageLibrary;
     }
@@ -35,26 +39,34 @@ final class Kernel
         }
 
         $validator = new RequestValidator($this->request);
-        if (!$requestValidatorResult = $validator->validate()) {
-            throw new ValidationException($requestValidatorResult);
+        if (!$validator->validate()) {
+            throw new ValidationException('Wrong url');
         }
 
         $extensionValidator = new ExtensionValidator($this->request, $this->extensions);
-        if (!$extensionValidatorResult = $extensionValidator->validate()) {
-            throw new ValidationException($extensionValidatorResult);
+        if (!$extensionValidator->validate()) {
+            throw new ValidationException('Wrong image modifier URL');
         }
+
+        $rootDir = $this->getRootDir();
+        $file = $this->imageLibrary->open($rootDir . '/' . self::UPLOADS_PATH . '/' . $this->filename);
 
         /**
          * @var $extension ExtensionContract
          */
         foreach ($this->extensions as $extension) {
-            $params = $extension->process($this->request);
-            dump($params);die;
+            $img = $extension->process($file, $extension->getParams($this->request));
+            $file = $img;
         }
     }
 
     private function registerExtension(ExtensionContract $extension)
     {
         $this->extensions[] = $extension;
+    }
+
+    private function getRootDir(): string
+    {
+        return dirname(__FILE__) . '/..';
     }
 }

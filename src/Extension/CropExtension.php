@@ -4,6 +4,10 @@ declare(strict_types=1);
 namespace App\Extension;
 
 use App\Contract\ExtensionContract;
+use Exception;
+use Imagine\Gd\Image;
+use Imagine\Image\Box;
+use Imagine\Image\Point;
 
 final class CropExtension implements ExtensionContract
 {
@@ -14,7 +18,7 @@ final class CropExtension implements ExtensionContract
         return self::REGEXP_WITHOUT_DELIMITERS;
     }
 
-    public function process(string $request): array
+    public function getParams(string $request): array
     {
         $values = $this->parseParams($request);
         list($start, $end, $width, $height) = explode(",", $values);
@@ -32,5 +36,23 @@ final class CropExtension implements ExtensionContract
         preg_match('/' . self::REGEXP_WITHOUT_DELIMITERS . '/', $request, $matches);
 
         return $matches['params'];
+    }
+
+    /**
+     * @param \Imagine\Gd\Image $file
+     * @throws Exception
+     */
+    public function process($file, array $params): Image
+    {
+        if ($file instanceof Image) {
+            return $file->crop(new Point($params['start'], $params['end']), new Box($params['width'], $params['height']));
+        }
+
+        throw new Exception('Unsupported image library');
+    }
+
+    public function getActionName(): string
+    {
+        return 'crop';
     }
 }

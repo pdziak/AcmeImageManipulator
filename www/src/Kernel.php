@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace App;
 
 use App\Contract\ExtensionContract;
+use App\Contract\ImageLibrary;
 use App\Exception\ValidationException;
 use Imagine\Gd\Imagine;
 
@@ -19,10 +20,10 @@ final class Kernel
     private string $filename;
     private array $supportedExtensionNames;
     private array $extensions = [];
-    private object $imageLibrary;
+    private ImageLibrary $imageLibrary;
     private string $route = self::ACTION_PROCESS;
 
-    public function __construct(string $request, Imagine $imageLibrary, array $supportedExtensionNames)
+    public function __construct(string $request, ImageLibrary $imageLibrary, array $supportedExtensionNames)
     {
         $this->request = preg_replace('@^/s/(.+)@', '$1', $request, -1, $count);
         if ($count) {
@@ -64,7 +65,7 @@ final class Kernel
     {
         foreach ($this->supportedExtensionNames as $extension) {
             $className = "\App\Extension\\$extension";
-            $this->registerExtension(new $className);
+            $this->registerExtension(new $className($this->imageLibrary));
         }
 
         $validator = new RequestValidator($this->request);
@@ -84,7 +85,8 @@ final class Kernel
          * @var $extension ExtensionContract
          */
         foreach ($this->extensions as $extension) {
-            $img = $extension->process($file, $extension->getParams($this->request));
+            $params = $extension->getParams($this->request);
+            $img = $extension->process($file, );
             $file = $img;
         }
 

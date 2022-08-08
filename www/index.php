@@ -18,6 +18,6 @@ $extensions = [
     'CropExtension'
 ];
 
-$app = new App\Kernel($_GET['s'], new \Imagine\Gd\Imagine(), $extensions);
+$app = new App\Kernel($_GET['s'], new \App\ImagineHandler(), $extensions);
 $app->run();
 
